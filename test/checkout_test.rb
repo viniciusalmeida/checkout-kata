@@ -12,6 +12,13 @@ class CheckoutTest < Minitest::Test
     @checkout = Checkout.new PRICES
   end
 
+  def test_scan
+    assert_equal Hash.new, @checkout.items
+    @checkout.scan 'A'; assert_equal({ A: 1 }, @checkout.items)
+    @checkout.scan 'B'; assert_equal({ A: 1, B: 1 }, @checkout.items)
+    @checkout.scan 'B'; assert_equal({ A: 1, B: 2 }, @checkout.items)
+  end
+
   def price_to(goods)
     self.setup
     goods.split(//).each { |item| @checkout.scan item }
